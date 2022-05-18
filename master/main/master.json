@@ -1,0 +1,23 @@
+{
+  "API interface service port": "Provide task CRUD service",
+  "apiPort": "8080",
+
+  "cluster network address": "Configure multiple configurations to avoid single points of failure",
+  "etcdEndPoints": ["127.0.0.1:2379"],
+
+  "The etcd connection timed out": "Unit: millisecond",
+  "etcdDialTimeout": 5000,
+
+  "Web page root directory": "Static pages, front and back end separate development",
+  "webroot": "webroot/*",
+
+
+  "staticRelativePath": "/static",
+  "staticRoot": "static",
+
+  "Mongodb address" : "Adopt Mongodb URI",
+  "MongodbUri" : "mongodb://localhost:27017",
+
+  "Mongodb Connect Timeout" : "Unit: millisecond",
+  "MongodbConnectTimeout" : 5000
+}
