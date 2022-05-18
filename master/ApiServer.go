@@ -155,7 +155,7 @@ func InitApiServer() (err error) {
 		jobGroup.DELETE("/delete", JobDeleteHandler)
 		jobGroup.GET("/list", JobListHandler)
 		jobGroup.POST("/kill", JobKillHandler)
-		jobGroup.GET("log", JobLogHandler)
+		jobGroup.GET("/log", JobLogHandler)
 	}
 
 	// set static file directory
