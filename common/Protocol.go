@@ -45,14 +45,14 @@ type JobEvent struct {
 }
 
 type JobLog struct {
-	JobName      string `bson:"jobName"`
-	Command      string `bson:"command"`
-	Err          string `bson:"err"`
-	Output       string `bson:"output"`
-	PlanTime     int64  `bson:"planTime"`     //Planed start time
-	ScheduleTime int64  `bson:"scheduleTime"` //Actual scheduling time
-	StartTime    int64  `bson:"startTime"`    //Start time of job execution
-	EndTime      int64  `bson:"endTime"`      //Job end time
+	JobName      string `bson:"jobName" json:"jobName"`
+	Command      string `bson:"command" json:"command"`
+	Err          string `bson:"err" json:"err"`
+	Output       string `bson:"output" json:"output"`
+	PlanTime     int64  `bson:"planTime" json:"planTime"`         //Planed start time
+	ScheduleTime int64  `bson:"scheduleTime" json:"scheduleTime"` //Actual scheduling time
+	StartTime    int64  `bson:"startTime" json:"startTime"`       //Start time of job execution
+	EndTime      int64  `bson:"endTime" json:"endTime"`           //Job end time
 }
 
 // LogBatch Log batches

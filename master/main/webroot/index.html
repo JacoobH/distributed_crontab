@@ -90,14 +90,127 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div id="log-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">任务日志</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="log-list" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>shell命令</th>
+                                <th>错误原因</th>
+                                <th>脚本输出</th>
+                                <th>计划开始时间</th>
+                                <th>实际调度时间</th>
+                                <th>开始执行时间</th>
+                                <th>执行结束时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <script>
         $(document).ready(function (){
+            function timeFormat(millsecondNum){
+                //传入一个数字，规定是几位数，不足补0
+                function paddingNum(num,n) {
+                    var len = num.toString().length;
+                    while (len < n){
+                        num = '0'+num;
+                        len++
+                    }
+                    return num
+                }
+                var data = new Date(millsecondNum);
+                var year = data.getFullYear();
+                var month = paddingNum(data.getMonth()+1,2);
+                var day = paddingNum(data.getDay(),2);
+                var hour = paddingNum(data.getHours(),2);
+                var minute = paddingNum(data.getMinutes(),2);
+                var second = paddingNum(data.getSeconds(), 2);
+                var millsecond = paddingNum(data.getMilliseconds(), 3);
+                return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second + "." + millsecond;
+            }
+
             $("#job-list").on("click", ".edit-job", function (event){
                 $('#edit-name').val($(this).parents('tr').children('.job-name').text())
                 $('#edit-command').val($(this).parents('tr').children('.job-command').text())
                 $('#edit-expr').val($(this).parents('tr').children('.job-cronExpr').text())
                 $('#edit-modal').modal('show')
             })
+
+            // $("#job-list").on("click", ".log-job", function (event){
+            //     $('#log-list tbody').empty()
+            //     var jobName = $(this).parents('tr').children('.job-name').text()
+            //
+            //     $.ajax({
+            //         url: "/job/log",
+            //         type: 'get',
+            //         dataType: 'json',
+            //         contentType: 'application/json;charset=utf-8',
+            //         data: JSON.stringify({name:jobName}),
+            //         success: function (resp) {
+            //             if (resp.errno != 0){
+            //                 return
+            //             }
+            //             var logList = resp.data
+            //             for (var i = 0; i < logList.length; ++i){
+            //                 var log = logList[i]
+            //                 var tr = $('<tr>')
+            //                 tr.append($('<td>').html(log.command))
+            //                 tr.append($('<td>').html(log.err))
+            //                 tr.append($('<td>').html(log.output))
+            //                 tr.append($('<td>').html(log.command))
+            //                 tr.append($('<td>').html(log.command))
+            //             }
+            //         }
+            //     })
+            //     $('#log-modal').modal('show')
+            // })
+
+            $('#job-list').on('click','.log-job',function(event){
+                //清空模态框内容
+                $('#log-list tbody').empty();
+                var jobName = $(this).parents('tr').children('.job-name').text();
+                $.ajax({
+                    url:'/job/log',
+                    dataType: 'json',
+                    // contentType: 'application/json;charset=utf-8',
+                    data: {name: jobName},
+                    type:'get',
+                    success:function (res) {
+                        if (res.errno != 0){
+                            console.log('这里');
+                            for (i in res.data){
+                                var log = res.data[i];
+                                var tr = $('<tr>');
+                                tr.append('<td>').html(log.command);
+                                tr.append($('<td>').html(log.err));
+                                tr.append($('<td>').html(log.output));
+                                tr.append($('<td>').html(timeFormat(log.planTime)));
+                                tr.append($('<td>').html(timeFormat(log.scheduleTime)));
+                                tr.append($('<td>').html(timeFormat(log.startTime)));
+                                tr.append($('<td>').html(timeFormat(log.endTime)));
+                                $('#log-list tbody').append(tr);
+                            }
+                        }
+                    }
+                });
+                $('#log-modal').modal('show');
+            });
 
             $('#new-job').on('click', function (){
                 $('#edit-name').val("")
@@ -174,6 +287,7 @@
                                 .append('<button class="btn btn-info edit-job">编辑</button>')
                                 .append('<button class="btn btn-danger delete-job">删除</button>')
                                 .append('<button class="btn btn-warning kill-job">强杀</button>')
+                                .append('<button class="btn btn-success log-job">日志</button>')
 
                             tr.append($('<tr>').append(toolbar))
                             $("#job-list tbody").append(tr)

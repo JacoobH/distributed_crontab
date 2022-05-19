@@ -117,15 +117,17 @@ func JobLogHandler(c *gin.Context) {
 		err         error
 		logArr      []*common.JobLog
 	)
-	name = c.PostForm("name")
-	skipParams = c.PostForm("skip")
-	limitParams = c.PostForm("limit")
+	name = c.Query("name")
+	skipParams = c.Query("skip")
+	limitParams = c.Query("limit")
 	if skip, err = strconv.Atoi(skipParams); err != nil {
 		skip = 0
 	}
 	if limit, err = strconv.Atoi(limitParams); err != nil {
 		limit = 20
 	}
+
+	fmt.Println(name, skip, limit)
 	if logArr, err = G_logMgr.ListLog(name, skip, limit); err != nil {
 		goto ERR
 	}
