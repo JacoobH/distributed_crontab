@@ -1,6 +1,6 @@
 {
   "cluster network address": "Configure multiple configurations to avoid single points of failure",
-  "etcdEndPoints": ["106.15.237.96:2379", "47.103.135.158:2379", "47.103.152.32:2379"],
+  "etcdEndPoints": ["106.15.237.96:2379"],
 
   "the etcd connection timed out": "Unit: millisecond",
   "etcdDialTimeout": 5000,
