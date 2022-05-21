@@ -139,6 +139,21 @@ ERR:
 	c.JSON(http.StatusOK, common.BuildResponse(-1, err.Error(), nil))
 }
 
+func WorkerListHandler(c *gin.Context) {
+	var (
+		workers []string
+		err     error
+	)
+	if workers, err = G_workerMgr.ListWorkers(); err != nil {
+		goto ERR
+	}
+	c.JSON(http.StatusOK, common.BuildResponse(0, "success", workers))
+	return
+ERR:
+	//Return exception reply
+	c.JSON(http.StatusOK, common.BuildResponse(-1, err.Error(), nil))
+}
+
 func InitApiServer() (err error) {
 	var (
 		jobGroup *gin.RouterGroup
@@ -159,7 +174,7 @@ func InitApiServer() (err error) {
 		jobGroup.POST("/kill", JobKillHandler)
 		jobGroup.GET("/log", JobLogHandler)
 	}
-
+	G_apiServer.router.GET("/worker/list", WorkerListHandler)
 	// set static file directory
 	G_apiServer.router.Static(G_config.StaticRelativePath, G_config.StaticRoot)
 	G_apiServer.router.LoadHTMLGlob(G_config.Webroot)
