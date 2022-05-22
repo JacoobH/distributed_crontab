@@ -8,8 +8,7 @@
     
 </div>
 
-<div align="center">
+
 | 系统介绍 |数据库设计|Docker镜像
 | :---: | :----: | :----: |
 | [:computer:](#computer-系统介绍)  |[:floppy_disk:](#floppy_disk-数据库设计)|[:floppy_disk:](#floppy_disk-Docker镜像)|
-</div>
