@@ -34,6 +34,21 @@
 
 正在部署....
 
+## :memo: 技术栈 
+
+### 后台
+
+- 开发语言：golang
+- mongodb进行日志存储及管理
+- etcd实现任务同步、服务发现及调度互斥
+- 使用[Golang Cron expression parser](https://github.com/gorhill/cronexpr)解析cron表达式
+- web框架[Gin](https://github.com/gin-gonic/gin)
+
+### 前端
+
+- jqury
+- bootstarp
+
 ## :wrench: 环境参数
 
 - go version go1.18.1 
