@@ -9,9 +9,9 @@
 </div>
 
 
-| 系统介绍 |数据库设计|Docker镜像
+| 系统介绍 |项目展示|Docker镜像
 | :---: | :----: | :----: |
-| [:computer:](#computer-系统介绍)  |[:floppy_disk:](#floppy_disk-数据库设计)|[:floppy_disk:](#floppy_disk-Docker镜像)|
+| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:floppy_disk:](#floppy_disk-Docker镜像)|
 
 ## :computer: 系统介绍
 
@@ -29,3 +29,5 @@
 
 ### 系统架构
 <div align="center"> <img src="https://github.com/JacoobH/images/blob/main/images/distributed_crontab/%E6%9E%B6%E6%9E%84.png"/> </div><br>
+
+## :bulb: 项目展示 
