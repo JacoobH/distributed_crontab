@@ -9,9 +9,9 @@
 </div>
 
 
-| 系统介绍 |项目展示|Docker镜像
+| 系统介绍 |项目展示|环境参数
 | :---: | :----: | :----: |
-| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:floppy_disk:](#floppy_disk-Docker镜像)|
+| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:wrench:](#wrench-环境参数)|
 
 ## :computer: 系统介绍
 
@@ -31,3 +31,7 @@
 <div align="center"> <img src="https://github.com/JacoobH/images/blob/main/images/distributed_crontab/%E6%9E%B6%E6%9E%84.png"/> </div><br>
 
 ## :bulb: 项目展示 
+
+正在部署....
+
+## :wrench: 环境参数
