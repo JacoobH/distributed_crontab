@@ -9,9 +9,9 @@
 </div>
 
 
-| 系统介绍 |项目展示|环境参数
-| :---: | :----: | :----: |
-| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:wrench:](#wrench-环境参数)|
+| 系统介绍 |项目展示|技术栈|环境参数
+| :---: | :----: | :----: | :----: |
+| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)||[:memo:](#memo-技术栈)|[:wrench:](#wrench-环境参数)|
 
 ## :computer: 系统介绍
 
@@ -39,5 +39,5 @@
 - go version go1.18.1 
 - etcd-v3.3.8
 - MONGO_VERSION=5.0.5
-- 开发环境Goland, Ubuntu 20.04.4 LTS
-- 部署环境Centos7.9
+- 开发环境: Goland, Ubuntu 20.04.4 LTS
+- 部署环境: Centos7.9
