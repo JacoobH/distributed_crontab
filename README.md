@@ -36,4 +36,8 @@
 
 ## :wrench: 环境参数
 
-* go version go1.18.1 
+- go version go1.18.1 
+- etcd-v3.3.8
+- MONGO_VERSION=5.0.5
+- 开发环境Goland, Ubuntu 20.04.4 LTS
+- 部署环境Centos7.9
