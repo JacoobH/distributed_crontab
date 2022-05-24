@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Golang Distributed Crontab</title>
-<!--    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-<!--    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">-->
-<!--    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-    <script src="../static/js/jquery.min.js"></script>
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!--    <script src="../static/js/jquery.min.js"></script>-->
+<!--    <script src="/master/main/static/js/jquery.min.js"></script>-->
+<!--    <link href="/master/main/static/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <script src="/master/main/static/js/bootstrap.min.js"></script>-->
 </head>
 <body>
     <div class="container-fluid">
@@ -22,6 +23,7 @@
         <div class="row">
             <div class="col-md-12">
                 <button type="button" class="btn btn-primary" id="new-job">新建任务</button>
+                <button type="button" class="btn btn-success" id="list-worker">健康节点</button>
             </div>
         </div>
         <div class="row">
@@ -122,6 +124,32 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div id="worker-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">健康节点</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="worker-list" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>IP</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <script>
         $(document).ready(function (){
             function timeFormat(millsecondNum){
@@ -152,34 +180,30 @@
                 $('#edit-modal').modal('show')
             })
 
-            // $("#job-list").on("click", ".log-job", function (event){
-            //     $('#log-list tbody').empty()
-            //     var jobName = $(this).parents('tr').children('.job-name').text()
-            //
-            //     $.ajax({
-            //         url: "/job/log",
-            //         type: 'get',
-            //         dataType: 'json',
-            //         contentType: 'application/json;charset=utf-8',
-            //         data: JSON.stringify({name:jobName}),
-            //         success: function (resp) {
-            //             if (resp.errno != 0){
-            //                 return
-            //             }
-            //             var logList = resp.data
-            //             for (var i = 0; i < logList.length; ++i){
-            //                 var log = logList[i]
-            //                 var tr = $('<tr>')
-            //                 tr.append($('<td>').html(log.command))
-            //                 tr.append($('<td>').html(log.err))
-            //                 tr.append($('<td>').html(log.output))
-            //                 tr.append($('<td>').html(log.command))
-            //                 tr.append($('<td>').html(log.command))
-            //             }
-            //         }
-            //     })
-            //     $('#log-modal').modal('show')
-            // })
+            //查看健康节点
+            $('#list-worker').on('click',function(event){
+                //清空模态框内容
+                $('#worker-list tbody').empty();
+                $.ajax({
+                    url:'/worker/list',
+                    dataType:'json',
+                    type:'get',
+                    success:function (resp) {
+                        if (resp.errNo != 0){
+                            return
+                        }
+                        var workerList = resp.data
+                        for (var i = 0; i < workerList.length; i++) {
+                            var workerIP = workerList[i]
+                            var tr = $('<tr>');
+                            tr.append($('<td>').html(workerIP));
+                            $('#worker-list tbody').append(tr)
+                        }
+
+                    }
+                });
+                $('#worker-modal').modal('show');
+            });
 
             $('#job-list').on('click','.log-job',function(event){
                 //清空模态框内容
@@ -192,20 +216,20 @@
                     data: {name: jobName},
                     type:'get',
                     success:function (res) {
-                        if (res.errno != 0){
-                            console.log('这里');
-                            for (i in res.data){
-                                var log = res.data[i];
-                                var tr = $('<tr>');
-                                tr.append('<td>').html(log.command);
-                                tr.append($('<td>').html(log.err));
-                                tr.append($('<td>').html(log.output));
-                                tr.append($('<td>').html(timeFormat(log.planTime)));
-                                tr.append($('<td>').html(timeFormat(log.scheduleTime)));
-                                tr.append($('<td>').html(timeFormat(log.startTime)));
-                                tr.append($('<td>').html(timeFormat(log.endTime)));
-                                $('#log-list tbody').append(tr);
-                            }
+                        if (res.errNo != 0){
+                            return
+                        }
+                        for (i in res.data){
+                            var log = res.data[i];
+                            var tr = $('<tr>');
+                            tr.append('<td>').html(log.command)
+                            tr.append($('<td>').html(log.err));
+                            tr.append($('<td>').html(log.output));
+                            tr.append($('<td>').html(timeFormat(log.planTime)));
+                            tr.append($('<td>').html(timeFormat(log.scheduleTime)));
+                            tr.append($('<td>').html(timeFormat(log.startTime)));
+                            tr.append($('<td>').html(timeFormat(log.endTime)));
+                            $('#log-list tbody').append(tr);
                         }
                     }
                 });

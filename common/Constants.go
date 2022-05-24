@@ -9,6 +9,9 @@ const (
 
 	JOB_LOCK_DIR = "/cron/lock/"
 
+	// JOB_WORKER_DIR Service Registry Directory
+	JOB_WORKER_DIR = "/cron/worker/"
+
 	// JOB_EVENT_SAVE save job event
 	JOB_EVENT_SAVE = 1
 

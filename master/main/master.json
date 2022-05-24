@@ -3,7 +3,7 @@
   "apiPort": "8080",
 
   "cluster network address": "Configure multiple configurations to avoid single points of failure",
-  "etcdEndPoints": ["127.0.0.1:2379"],
+  "etcdEndPoints": ["localhost:2379"],
 
   "The etcd connection timed out": "Unit: millisecond",
   "etcdDialTimeout": 5000,

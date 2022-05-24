@@ -113,6 +113,10 @@ func ExtractKillerName(killerKey string) string {
 	return strings.TrimPrefix(killerKey, JOB_KILLER_DIR)
 }
 
+func ExtractWorkerName(killerKey string) string {
+	return strings.TrimPrefix(killerKey, JOB_WORKER_DIR)
+}
+
 func BuildJobEvent(eventType int, job *Job) (jobEvent *JobEvent) {
 	return &JobEvent{
 		EventType: eventType,
