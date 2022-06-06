@@ -31,13 +31,13 @@
 <div align="center"> <img src="https://github.com/JacoobH/images/blob/main/images/distributed_crontab/%E6%9E%B6%E6%9E%84.png"/> </div><br>
 
 ### master-worker功能介绍
-master功能：
+**master**功能：
 - 任务管理：CURD任务；
 - 任务日志：查看任务执行历史日志；
 - 任务控制：提供强制结束任务接口；
 - web管理界面
 
-worker功能：
+**worker**功能：
 - 任务同步：监听etcd中/cron/jobs/目录变化；
 - 任务调度：基于cron表达式计算，触发过期任务；
 - 任务执行：协程池并发执行多任务，基于etcd分布式锁抢占；
