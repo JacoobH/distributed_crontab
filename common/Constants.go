@@ -7,6 +7,7 @@ const (
 	// JOB_KILLER_DIR kill directory
 	JOB_KILLER_DIR = "/cron/killer/"
 
+	// JOB_LOCK_DIR Lock directory
 	JOB_LOCK_DIR = "/cron/lock/"
 
 	// JOB_WORKER_DIR Service Registry Directory
@@ -18,5 +19,6 @@ const (
 	// JOB_EVENT_DELETE delete job event
 	JOB_EVENT_DELETE = 2
 
+	// JOB_EVENT_KILL Forcible kill mission event
 	JOB_EVENT_KILL = 3
 )

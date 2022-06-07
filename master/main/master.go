@@ -31,7 +31,7 @@ func main() {
 	// Initialize command line arguments
 	initArgs()
 
-	//初始化线程
+	//Initializing the thread
 	initEnv()
 
 	// Load the configuration
@@ -39,25 +39,27 @@ func main() {
 		goto ERR
 	}
 
+	//service registration
 	if err = master.InitWorkerMgr(); err != nil {
 		goto ERR
 	}
 
+	//Start logging (connect to mongodb)
 	if err = master.InitLogMgr(); err != nil {
 		goto ERR
 	}
 
-	// Job manager
+	// Start etcd (Connect etcd)
 	if err = master.InitJobMgr(); err != nil {
 		goto ERR
 	}
 
-	//启动API HTTP服务
+	//Start the Api HTTP service
 	if err = master.InitApiServer(); err != nil {
 		goto ERR
 	}
 
-	//正常退出
+	//The normal exit
 	return
 
 ERR:

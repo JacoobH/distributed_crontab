@@ -14,10 +14,13 @@ type ApiServer struct {
 
 // G_apiServer Singleton
 var (
+	// make a global apiServer, equal to a singleton
 	G_apiServer *ApiServer
 )
 
-// JobSaveHandler POST
+// JobSaveHandler POST submission
+// job = {"name":"jobname","command":"echo 123","cronExpr":"* * * * *"}
+// x-www-form-urlencoded
 func JobSaveHandler(c *gin.Context) {
 	// POST job={"name":"job1", "command":"echo hello", "cronExpr":"* * * * *"}
 	var (

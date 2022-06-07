@@ -31,7 +31,7 @@ type JobExecuteInfo struct {
 	CancelFunc context.CancelFunc
 }
 
-// Response HTTP interface response
+// Response Uniform return structure format
 type Response struct {
 	ErrNo int         `json:"errNo"`
 	Msg   string      `json:"msg"`
@@ -44,6 +44,7 @@ type JobEvent struct {
 	Job       *Job
 }
 
+// JobLog Job log
 type JobLog struct {
 	JobName      string `bson:"jobName" json:"jobName"`
 	Command      string `bson:"command" json:"command"`
@@ -70,14 +71,17 @@ type JobExecuteResult struct {
 
 }
 
+// JobLogFilter Filtering criteria for task log query
 type JobLogFilter struct {
 	JobName string `bson:"jobName"`
 }
 
+// SortLogByStartTime Sort task log query
 type SortLogByStartTime struct {
 	SortOrder int `bson:"startTime"`
 }
 
+// BuildResponse Building the return format foundation
 func BuildResponse(errNo int, msg string, data interface{}) (resp Response) {
 	// 1. Define a response
 	var (
@@ -92,6 +96,7 @@ func BuildResponse(errNo int, msg string, data interface{}) (resp Response) {
 	return
 }
 
+// UnpackJob Deserialize the job
 func UnpackJob(value []byte) (ret *Job, err error) {
 	var (
 		job *Job
@@ -104,19 +109,22 @@ func UnpackJob(value []byte) (ret *Job, err error) {
 	return
 }
 
-// ExtractJobName Extract the task name from the key of etCD
+// ExtractJobName Extract the job name from the JOB_SAVE_DIR directory of etcd
 func ExtractJobName(jobKey string) string {
 	return strings.TrimPrefix(jobKey, JOB_SAVE_DIR)
 }
 
+// ExtractKillerName Extract the job name from the JOB_KILLER_DIR directory of etcd
 func ExtractKillerName(killerKey string) string {
 	return strings.TrimPrefix(killerKey, JOB_KILLER_DIR)
 }
 
+// ExtractWorkerName Extract the job name from the JOB_WORKER_DIR directory of etcd
 func ExtractWorkerName(killerKey string) string {
 	return strings.TrimPrefix(killerKey, JOB_WORKER_DIR)
 }
 
+// BuildJobEvent There are three types of task event changes: 1. Update a task 2. Delete a task 3. Terminate the task
 func BuildJobEvent(eventType int, job *Job) (jobEvent *JobEvent) {
 	return &JobEvent{
 		EventType: eventType,
@@ -143,6 +151,7 @@ func BuildJobSchedulePlan(job *Job) (jobSchedulePlan *JobSchedulePlan, err error
 	return
 }
 
+// BuildJobExecuteInfo Build a JobExecuteInfo
 func BuildJobExecuteInfo(jobSchedulePlan *JobSchedulePlan) (jobExecuteInfo *JobExecuteInfo) {
 	jobExecuteInfo = &JobExecuteInfo{
 		Job:      jobSchedulePlan.Job,
