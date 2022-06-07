@@ -5,7 +5,7 @@
 <div align="center">
     <a href="https://github.com/JacoobH/distributed_crontab"> <img src="https://badgen.net/github/stars/JacoobH/distributed_crontab?icon=github&color=4ab8a1"></a>
     <a href="https://github.com/JacoobH/distributed_crontab"> <img src="https://badgen.net/github/forks/JacoobH/distributed_crontab?icon=github&color=4ab8a1"></a>
-    
+
 </div>
 
 
@@ -30,11 +30,24 @@
 ### 系统架构
 <div align="center"> <img src="https://github.com/JacoobH/images/blob/main/images/distributed_crontab/%E6%9E%B6%E6%9E%84.png"/> </div><br>
 
-## :bulb: 项目展示 
+### master-worker功能介绍
+**master**功能：
+- 任务管理：CURD任务；
+- 任务日志：查看任务执行历史日志；
+- 任务控制：提供强制结束任务接口；
+- web管理界面
 
-正在部署....
+**worker**功能：
+- 任务同步：监听etcd中/cron/jobs/目录变化；
+- 任务调度：基于cron表达式计算，触发过期任务；
+- 任务执行：协程池并发执行多任务，基于etcd分布式锁抢占；
+- 日志保存：捕获任务执行输出，保存到Mongodb
 
-## :memo: 技术栈 
+## :bulb: 项目展示
+
+[distributed_crontab](http://47.103.84.254:8080/)
+
+## :memo: 技术栈
 
 ### 后台
 
@@ -51,7 +64,7 @@
 
 ## :wrench: 环境参数
 
-- go version go1.18.1 
+- go version go1.18.1
 - etcd-v3.3.8
 - MONGO_VERSION=5.0.5
 - 开发环境: Goland, Ubuntu 20.04.4 LTS
