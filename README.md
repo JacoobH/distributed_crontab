@@ -9,9 +9,9 @@
 </div>
 
 
-| 系统介绍 |项目展示|技术栈|环境参数|                关于需要手动安装的库                |Docker|
-| :---: | :----: | :----: | :----: |:----------------------------------------:|:----: |
-| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:memo:](#memo-技术栈)|[:wrench:](#wrench-环境参数)|[:floppy_disk:](#:floppy_disk:-关于需要手动安装的库)|[:bulb:](#bulb-Docker)|
+| 系统介绍 |项目展示|技术栈|环境参数|                关于需要手动安装的库                |          部署          |
+| :---: | :----: | :----: | :----: |:----------------------------------------:|:--------------------:|
+| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:memo:](#memo-技术栈)|[:wrench:](#wrench-环境参数)|[:floppy_disk:](#:floppy_disk:-关于需要手动安装的库)|[:cloud:](#cloud-部署)|
 
 ## :computer: 系统介绍
 
@@ -78,14 +78,28 @@ go get go.mongodb.org/mongo-driver/mongo
 go get github.com/gorhill/cronexpr
 ```
 
-## :bulb: Docker
+## :cloud: 部署
+### Docker文件
 [master-dockerfile](https://github.com/JacoobH/distributed_crontab/blob/master/master/main/Dockerfile)
 ```bash
-docker pull chia11/crontab-master:latest
+# 拉取master镜像
+> docker pull chia11/crontab-master:latest
 ```
 
 
 [worker-dockerfile](https://github.com/JacoobH/distributed_crontab/blob/master/worker/main/Dockerfile)
 ```bash
-docker pull chia11/crontab-worker:latest
+# 拉取worker镜像
+> docker pull chia11/crontab-worker:latest
+```
+[docker-compose.yml](https://github.com/JacoobH/distributed_crontab/blob/master/docker-compose.yml)
+
+### 启动应用
+```bash
+# 克隆项目
+> git clone https://github.com/JacoobH/distributed_crontab.git
+# 转到项目目录
+> cd distributed-crontab
+# docker compose 启动项目
+> docker-compose up
 ```
