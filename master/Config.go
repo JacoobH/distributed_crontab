@@ -2,7 +2,6 @@ package master
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 )
 
@@ -22,6 +21,7 @@ var (
 	G_config *Config
 )
 
+// InitConfig Load&Reads the configuration file
 func InitConfig(filename string) (err error) {
 	var (
 		content []byte
@@ -39,8 +39,6 @@ func InitConfig(filename string) (err error) {
 
 	// 3.Assignment singleton
 	G_config = &conf
-
-	fmt.Println(conf.ApiPort)
 
 	return
 }

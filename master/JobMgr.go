@@ -11,6 +11,7 @@ import (
 )
 
 // JobMgr job manager
+// To create the etcd service
 type JobMgr struct {
 	client *clientv3.Client
 	kv     clientv3.KV
@@ -29,6 +30,7 @@ func InitJobMgr() (err error) {
 		kv     clientv3.KV
 		lease  clientv3.Lease
 	)
+	// Read from the configuration file
 	config = clientv3.Config{
 		Endpoints:   G_config.EtcdEndPoints,                                     //cluster network address
 		DialTimeout: time.Duration(G_config.EtcdDialTimeout) * time.Millisecond, // timeout
@@ -53,7 +55,8 @@ func InitJobMgr() (err error) {
 	return
 }
 
-// SaveJob Save job
+// SaveJob Save the job to etcd and return the last overridden value
+// /cron/jobs/xxx => {"name":xxx,"command":xxx,"cronExpr":xxx}
 func (jobMgr *JobMgr) SaveJob(job *common2.Job) (oldJob *common2.Job, err error) {
 	// Save job to /cron/jobs/job_name -> json
 	var (
@@ -89,7 +92,7 @@ func (jobMgr *JobMgr) SaveJob(job *common2.Job) (oldJob *common2.Job, err error)
 	return
 }
 
-// DeleteJob Delete job
+// DeleteJob Remove job from etcd and return the previous value
 func (jobMgr *JobMgr) DeleteJob(name string) (oldJob *common2.Job, err error) {
 	var (
 		jobKey    string
@@ -144,7 +147,7 @@ func (jobMgr *JobMgr) ListJob() (jobList []*common2.Job, err error) {
 	return
 }
 
-// KillJob Kill job
+// KillJob Kill the Job. Put the Job in /cron/killer/, and the worker's listener will listen for the change and execute the shutdown process
 func (jobMgr *JobMgr) KillJob(name string) (err error) {
 	// Update key=/cron/killer/jobName
 	var (

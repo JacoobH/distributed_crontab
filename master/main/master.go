@@ -19,6 +19,7 @@ func initArgs() {
 	flag.Parse()
 }
 
+// Initial Thread
 func initEnv() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }

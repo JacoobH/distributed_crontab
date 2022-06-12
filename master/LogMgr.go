@@ -41,6 +41,7 @@ func InitLogMgr() (err error) {
 	return
 }
 
+// ListLog View Job logs
 func (logMgr *LogMgr) ListLog(name string, skip int, limit int) (logArr []*common.JobLog, err error) {
 	var (
 		filter  *common.JobLogFilter
@@ -50,10 +51,12 @@ func (logMgr *LogMgr) ListLog(name string, skip int, limit int) (logArr []*commo
 		jobLog  *common.JobLog
 	)
 
+	// To facilitate validation, give logs to the initial number
 	logArr = make([]*common.JobLog, 0)
 
 	// Filter conditions
 	filter = &common.JobLogFilter{JobName: name}
+	// sorting
 	logSort = &common.SortLogByStartTime{SortOrder: -1}
 
 	findOpt = options.Find()

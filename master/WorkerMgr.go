@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-//服务注册
+// WorkerMgr Service registration
 type WorkerMgr struct {
 	client  *clientv3.Client
 	kv      clientv3.KV

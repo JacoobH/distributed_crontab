@@ -19,8 +19,7 @@ var (
 )
 
 // JobSaveHandler POST submission
-// job = {"name":"jobname","command":"echo 123","cronExpr":"* * * * *"}
-// x-www-form-urlencoded
+// job = {"name":"jobName","command":"echo 123","cronExpr":"* * * * *"}
 func JobSaveHandler(c *gin.Context) {
 	// POST job={"name":"job1", "command":"echo hello", "cronExpr":"* * * * *"}
 	var (
@@ -110,19 +109,21 @@ ERR:
 	c.JSON(http.StatusOK, common.BuildResponse(-1, err.Error(), nil))
 }
 
+// JobLogHandler Viewing Job Logs
 func JobLogHandler(c *gin.Context) {
 	var (
 		name        string
 		skipParams  string
 		limitParams string
-		skip        int
-		limit       int
+		skip        int // offset dimension
+		limit       int // page size
 		err         error
 		logArr      []*common.JobLog
 	)
 	name = c.Query("name")
 	skipParams = c.Query("skip")
 	limitParams = c.Query("limit")
+
 	if skip, err = strconv.Atoi(skipParams); err != nil {
 		skip = 0
 	}
@@ -130,7 +131,6 @@ func JobLogHandler(c *gin.Context) {
 		limit = 20
 	}
 
-	fmt.Println(name, skip, limit)
 	if logArr, err = G_logMgr.ListLog(name, skip, limit); err != nil {
 		goto ERR
 	}
@@ -142,6 +142,7 @@ ERR:
 	c.JSON(http.StatusOK, common.BuildResponse(-1, err.Error(), nil))
 }
 
+// WorkerListHandler Service registration discovery list (Worker list)
 func WorkerListHandler(c *gin.Context) {
 	var (
 		workers []string
@@ -157,6 +158,7 @@ ERR:
 	c.JSON(http.StatusOK, common.BuildResponse(-1, err.Error(), nil))
 }
 
+// InitApiServer Initialize the API HTTP service
 func InitApiServer() (err error) {
 	var (
 		jobGroup *gin.RouterGroup

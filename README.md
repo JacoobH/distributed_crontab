@@ -9,9 +9,9 @@
 </div>
 
 
-| 系统介绍 |项目展示|技术栈|环境参数|                关于需要手动安装的库                |          部署          |
-| :---: | :----: | :----: | :----: |:----------------------------------------:|:--------------------:|
-| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:memo:](#memo-技术栈)|[:wrench:](#wrench-环境参数)|[:floppy_disk:](#:floppy_disk:-关于需要手动安装的库)|[:cloud:](#cloud-部署)|
+| 系统介绍 |项目展示|技术栈|环境参数|                关于需要手动安装的库                |          部署          |               TODO               |
+| :---: | :----: | :----: | :----: |:----------------------------------------:|:--------------------:|:--------------------------------:|
+| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:memo:](#memo-技术栈)|[:wrench:](#wrench-环境参数)|[:floppy_disk:](#:floppy_disk:-关于需要手动安装的库)|[:cloud:](#cloud-部署)| [:watermelon:](#watermelon-TODO) |
 
 ## :computer: 系统介绍
 
@@ -103,3 +103,9 @@ go get github.com/gorhill/cronexpr
 # docker compose 启动项目
 > docker-compose up
 ```
+
+## :watermelon: TODO
+* [ ] 鉴权
+* [ ] 设置任务过期时间
+* [ ] 日志分页
+* [ ] CI/CD
