@@ -9,9 +9,9 @@
 </div>
 
 
-| 系统介绍 |项目展示|技术栈|环境参数
-| :---: | :----: | :----: | :----: |
-| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:memo:](#memo-技术栈)|[:wrench:](#wrench-环境参数)|
+| 系统介绍 |项目展示|技术栈|环境参数|关于需要手动安装的库|
+| :---: | :----: | :----: | :----: | :----: |
+| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:memo:](#memo-技术栈)|[:wrench:](#wrench-环境参数)|[::floppy_disk::](#:floppy_disk:-关于需要手动安装的库)|
 
 ## :computer: 系统介绍
 
@@ -69,3 +69,23 @@
 - MONGO_VERSION=5.0.5
 - 开发环境: Goland, Ubuntu 20.04.4 LTS
 - 部署环境: Centos7.9
+
+## :floppy_disk: 关于需要手动安装的库
+```bash
+go get -u github.com/gin-gonic/gin
+go get go.etcd.io/etcd/client/v3
+go get go.mongodb.org/mongo-driver/mongo
+go get github.com/gorhill/cronexpr
+```
+
+## Docker
+[master-dockerfile](https://github.com/JacoobH/distributed_crontab/blob/master/master/main/Dockerfile)
+```bash
+docker pull chia11/crontab-master:latest
+```
+
+
+[worker-dockerfile](https://github.com/JacoobH/distributed_crontab/blob/master/worker/main/Dockerfile)
+```bash
+docker pull chia11/crontab-worker:latest
+```
