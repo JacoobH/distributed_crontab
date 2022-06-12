@@ -83,7 +83,7 @@ func (jobLock *JobLock) TryLock() (err error) {
 
 	jobLock.leaseId = leaseId
 	jobLock.cancelFunc = cancelFunc
-	.isLocked = true
+	jobLock.isLocked = true
 	return
 FAIL:
 	cancelFunc()

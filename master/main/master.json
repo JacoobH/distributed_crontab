@@ -3,7 +3,7 @@
   "apiPort": "8080",
 
   "cluster network address": "Configure multiple configurations to avoid single points of failure",
-  "etcdEndPoints": ["localhost:2379"],
+  "etcdEndPoints": ["172.17.0.1:2379"],
 
   "The etcd connection timed out": "Unit: millisecond",
   "etcdDialTimeout": 5000,
@@ -16,7 +16,7 @@
   "staticRoot": "static",
 
   "Mongodb address" : "Adopt Mongodb URI",
-  "MongodbUri" : "mongodb://localhost:27017",
+  "MongodbUri" : "mongodb://172.17.0.1:27017",
 
   "Mongodb Connect Timeout" : "Unit: millisecond",
   "MongodbConnectTimeout" : 5000
