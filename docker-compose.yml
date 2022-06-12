@@ -1,0 +1,31 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  crontab-master:
+    build:
+      dockerfile: master/main/Dockerfile
+    image: chia11/crontab-master
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+      - etcd
+  crontab-worker:
+    build:
+      dockerfile: worker/main/Dockerfile
+    image: chia11/crontab-worker
+    restart: always
+    depends_on:
+      - mongo
+      - etcd
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+  etcd:
+    image: bitnami/etcd
+    restart: always
+    ports:
+      - "2379:2379"
+      - "2380:2380"
