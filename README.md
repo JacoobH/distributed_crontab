@@ -9,9 +9,9 @@
 </div>
 
 
-| 系统介绍 |项目展示|技术栈|环境参数|关于需要手动安装的库|
-| :---: | :----: | :----: | :----: | :----: |
-| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:memo:](#memo-技术栈)|[:wrench:](#wrench-环境参数)|[::floppy_disk::](#:floppy_disk:-关于需要手动安装的库)|
+| 系统介绍 |项目展示|技术栈|环境参数|                关于需要手动安装的库                |Docker|
+| :---: | :----: | :----: | :----: |:----------------------------------------:|
+| [:computer:](#computer-系统介绍)  | [:bulb:](#bulb-项目展示)|[:memo:](#memo-技术栈)|[:wrench:](#wrench-环境参数)|[:floppy_disk:](#:floppy_disk:-关于需要手动安装的库)|[:bulb:](#bulb-Docker)|
 
 ## :computer: 系统介绍
 
@@ -78,7 +78,7 @@ go get go.mongodb.org/mongo-driver/mongo
 go get github.com/gorhill/cronexpr
 ```
 
-## Docker
+## :bulb: Docker
 [master-dockerfile](https://github.com/JacoobH/distributed_crontab/blob/master/master/main/Dockerfile)
 ```bash
 docker pull chia11/crontab-master:latest
