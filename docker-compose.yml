@@ -2,7 +2,7 @@ version: "3.8"
 services:
   crontab-master:
     build:
-      dockerfile: master/main/Dockerfile
+      context: master/main/
 #    image: chia11/crontab-master
     restart: always
     ports:
@@ -12,7 +12,7 @@ services:
       - etcd
   crontab-worker:
     build:
-      dockerfile: worker/main/Dockerfile
+      context: worker/main/
 #    image: chia11/crontab-worker
     restart: always
     depends_on:
