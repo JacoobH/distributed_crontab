@@ -1,7 +1,9 @@
 version: "3.8"
 services:
   crontab-master:
-    image: chia11/crontab-master
+    build:
+      dockerfile: master/main/Dockerfile
+#    image: chia11/crontab-master
     restart: always
     ports:
       - "8080:8080"
@@ -9,7 +11,9 @@ services:
       - mongo
       - etcd
   crontab-worker:
-    image: chia11/crontab-worker
+    build:
+      dockerfile: worker/main/Dockerfile
+#    image: chia11/crontab-worker
     restart: always
     depends_on:
       - mongo
