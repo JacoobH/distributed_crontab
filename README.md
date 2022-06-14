@@ -108,4 +108,4 @@ go get github.com/gorhill/cronexpr
 * [ ] 鉴权
 * [ ] 设置任务过期时间
 * [ ] 日志分页
-* [ ] CI/CD
+* [x] CI/CD `(使用Jenkins+Gitlab实现)`
