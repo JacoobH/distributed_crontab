@@ -16,9 +16,11 @@ type Config struct {
 }
 
 var (
+	// Set a global singleton config
 	G_config *Config
 )
 
+// InitConfig load read configuration file
 func InitConfig(filename string) (err error) {
 	var (
 		content []byte

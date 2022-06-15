@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-//用来创建etcd服务
+// JobMgr Used to create the ETCD service
 type JobMgr struct {
 	client  *clientv3.Client
 	kv      clientv3.KV
@@ -20,7 +20,7 @@ var (
 	G_jobMgr *JobMgr
 )
 
-//监听任务
+//Listening jobs
 func (jobMgr *JobMgr) watchJobs() (err error) {
 	var (
 		jobKey     string
@@ -36,55 +36,54 @@ func (jobMgr *JobMgr) watchJobs() (err error) {
 	)
 	jobKey = common.JOB_SAVE_DIR
 
-	//1 初始化，将已有任务先推送到scheduler调度协程
-	//1.1先获取到所有的任务
+	//1 Initialization to push existing jobs to scheduler scheduling coroutine first
+	//1.1 Get all quests first
 	if getResp, err = jobMgr.kv.Get(context.TODO(), jobKey, clientv3.WithPrefix()); err != nil {
 		return
 	}
-	//1.2将获取到的所有任务推送到scheduler(调度协程)
+	//1.2 Push all jobs fetched to the Scheduler (scheduled coroutine)
 	for _, kvPair = range getResp.Kvs {
-		//需要转json
+		//Need to turn to json
 		if job, err = common.UnpackJob(kvPair.Value); err != nil {
-			//无法序列化的就跳过
+			//Those that cannot be serialized are skipped
 			err = nil
 			continue
 		}
 		jobEvent = common.BuildJobEvent(common.JOB_EVENT_SAVE, job)
 		//fmt.Println(*jobEvent)
-		//把这个job同步给scheduler(调度协程)
+		//Synchronize this job to the scheduler
 		G_scheduler.PushJobEvent(jobEvent)
 	}
-	//2 打开一个协程，用来监听job任务变化，再将变化推送到scheduler调度协程
+	//2 Open a coroutine that monitors job changes and pushes the changes to scheduler
 	go func() {
-		//2.1 获取当前版本号
+		//2.1 Gets the current version number
 		revision = getResp.Header.Revision + 1
-		//2.2开始监听(/cron/jobs/)
+		//2.2 Start listening (/cron/jobs/)
 		watchChan = jobMgr.watcher.Watch(context.TODO(), common.JOB_SAVE_DIR, clientv3.WithRev(revision), clientv3.WithPrefix())
-		//watchResp里有切片，无法直接比较空，只能用for...range ,不能用select
+		//WatchResp has a slice in it，you can't compare empty directly，can only be used for... Range, you can't use select
 		for watchResp = range watchChan {
-			//因为etcd在watch的时候，为了高吞吐量以及效率，所以有可能一次会发送多种监听事件在event中
-			//然后存入chan
+			//For high throughput and efficiency, etcd may send multiple listening events in event at one time when it is on watch
+			//And then put it in Chan
 			for _, watchEvent = range watchResp.Events {
 				switch watchEvent.Type {
 				case mvccpb.PUT:
-					//保存任务，需要修改后的整体job
+					//Save the job that needs to be modified
 					if job, err = common.UnpackJob(watchEvent.Kv.Value); err != nil {
-						//有错误就跳过
+						//Skip any mistakes
 						err = nil
 						continue
 					}
 					jobEvent = common.BuildJobEvent(common.JOB_EVENT_SAVE, job)
 				case mvccpb.DELETE:
-					//删除任务，所以只要key就好
+					//Delete the job, so just need the key
 					jobName = common.ExtractJobName(string(watchEvent.Kv.Key))
 					jobEvent = common.BuildJobEvent(common.JOB_EVENT_DELETE, &common.Job{
 						Name: jobName,
 					})
 				}
-				//将修改任务推入到scheduler调度协程
-				//将删除任务推入到scheduler调度协程
+				//Push the change job into the Scheduler scheduling coroutine
+				//The delete-job is pushed into the Scheduler scheduling coroutine
 				G_scheduler.PushJobEvent(jobEvent)
-				//fmt.Println(*jobEvent)
 			}
 		}
 	}()

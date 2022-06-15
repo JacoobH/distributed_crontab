@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	// Set a global configuration file path, obtained from the command line
 	confFile string // Configuration file path
 )
 
@@ -21,6 +22,7 @@ func initArgs() {
 }
 
 func initEnv() {
+	// Set the maximum number of threads for the current GO program to the number of CPU cores on the host
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
@@ -40,10 +42,12 @@ func main() {
 		goto ERR
 	}
 
+	// Service registration
 	if err = worker.InitRegister(); err != nil {
 		goto ERR
 	}
 
+	// Start log
 	if err = worker.InitLogSink(); err != nil {
 		goto ERR
 	}
@@ -58,11 +62,12 @@ func main() {
 		goto ERR
 	}
 
+	//
 	if err = worker.InitJobMgr(); err != nil {
 		goto ERR
 	}
 
-	//正常退出
+	//The normal exit
 	for {
 		time.Sleep(1 * time.Second)
 	}

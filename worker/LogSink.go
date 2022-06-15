@@ -23,52 +23,52 @@ var (
 )
 
 func (logSink *LogSink) saveLogs(batch *common.LogBatch) {
-	//因为是插入日志，所以成功失败皆可
+	//Because it is an insert log, success or failure is optional
 	logSink.collection.InsertMany(context.TODO(), batch.Logs)
 }
 func (logSink *LogSink) writeLoop() {
 	var (
 		log          *common.JobLog
-		batch        *common.LogBatch //当前的日志批次
+		batch        *common.LogBatch //The current log batch
 		commitTimer  *time.Timer
-		timeoutBatch *common.LogBatch //超时批次
+		timeoutBatch *common.LogBatch //Timeout batches
 	)
 	for {
 		select {
 		case log = <-logSink.logChan:
-			//将获得到的日志进行写入
+			//Write to the obtained log
 			if batch == nil {
-				//证明是已经提交了或者是刚刚进入
+				//Proof that it has been submitted or just entered
 				batch = &common.LogBatch{}
-				//超过规定阈值，进行自动提交
+				//If the threshold is exceeded, automatic submission is performed
 				commitTimer = time.AfterFunc(time.Duration(G_config.JobLogCommitTimeout)*time.Millisecond, func(batch *common.LogBatch) func() {
-					//这里传入的batch会与外部的batch不相同
+					//The batch passed in here will be different from the external batch
 					return func() {
-						//将传入的超时批次放到autoCommitChan，让select检索到去做后面的事情
+						//Place the passed timeout batch to the autoCommitChan and let the SELECT retrieve it to do the rest
 						logSink.autoCommitChan <- batch
 					}
 				}(batch))
 
 			}
 			batch.Logs = append(batch.Logs, log)
-			//查看目前数量是否达到阈值，达到就提交
+			//Check whether the current quantity reaches the threshold, and submit when it does
 			if len(batch.Logs) >= G_config.JobLogBatchSize {
-				//提交
+				//Commit
 				logSink.saveLogs(batch)
-				//清空
+				//Clear
 				batch = nil
-				//已经自动提交了，就将定时器停止(取消)
+				//If it has been submitted automatically, stop the timer (cancel)
 				commitTimer.Stop()
 			}
 		case timeoutBatch = <-logSink.autoCommitChan:
-			//超时批次
-			//因为有可能刚发过来，日志马上满了。已经提交过了,batch就变化了
+			//Timeout batches
+			//Because maybe it just came in and the log filled up. It has been submitted, and the batch has changed
 			if timeoutBatch != batch {
-				continue //跳过提交
+				continue //Skip to submit
 			}
-			//提交
+			//Commit
 			logSink.saveLogs(timeoutBatch)
-			//清空
+			//Clear
 			batch = nil
 		}
 	}

@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Executor Job executor
 type Executor struct {
 }
 
@@ -14,6 +15,7 @@ var (
 	G_executor *Executor
 )
 
+// ExecuteJob Execute a job
 func (executor *Executor) ExecuteJob(jobExecuteInfo *common.JobExecuteInfo) {
 	go func() {
 		var (
@@ -55,6 +57,7 @@ func (executor *Executor) ExecuteJob(jobExecuteInfo *common.JobExecuteInfo) {
 	}()
 }
 
+// InitExecutor Initializes the executor
 func InitExecutor() (err error) {
 	G_executor = &Executor{}
 	return

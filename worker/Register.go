@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-//
+// Register Service registration
 type Register struct {
 	client *clientv3.Client
 	kv     clientv3.KV
@@ -43,7 +43,7 @@ func getLocalIP() (ipv4 string, err error) {
 	return
 }
 
-//注册到/cron/workers/ip，并且自动续约
+// Register with /cron/workers/ip and renew automatically
 func (register *Register) keepOnline() {
 	var (
 		registerKey       string
@@ -58,17 +58,17 @@ func (register *Register) keepOnline() {
 
 	for {
 		ctxFunc = nil
-		//1.生成租约
+		//1.Generate the lease
 		if leaseGrantResp, err = register.lease.Grant(context.TODO(), 10); err != nil {
 			goto ReTry
 		}
-		//生成上下文
+		//Generation context
 		ctx, ctxFunc = context.WithCancel(context.TODO())
-		//自动续租
+		//Automatic renewal
 		if leaseKeepRespChan, err = register.lease.KeepAlive(ctx, leaseGrantResp.ID); err != nil {
 			goto ReTry
 		}
-		//注册到etcd
+		//Registered to etcd
 		if _, err = register.kv.Put(context.TODO(), registerKey, "", clientv3.WithLease(leaseGrantResp.ID)); err != nil {
 			goto ReTry
 		}
@@ -77,20 +77,20 @@ func (register *Register) keepOnline() {
 			select {
 			case leaseKeep = <-leaseKeepRespChan:
 				if leaseKeep == nil {
-					//证明此时连接异常，需要重新连接
+					//The connection is abnormal and needs to be re-connected
 					goto ReTry
 				}
 			}
 		}
 	ReTry:
-		//取消租约
+		//Cancel the lease
 		if ctxFunc != nil {
-			//因为一开始的时候没有生成ctxFunc，所以给一个nil来判断是哪里出的错误
-			//将租约取消并且过期
+			//Because we didn't generate ctxFunc in the first place, so we give nil to see what went wrong
+			//Cancel and expire the lease
 			ctxFunc()
 			register.lease.Revoke(context.TODO(), leaseGrantResp.ID)
 		}
-		//如果失败了，就过一秒再试能否上线
+		//If it fails, try again a second later
 		time.Sleep(1 * time.Second)
 	}
 
