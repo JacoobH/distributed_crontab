@@ -107,5 +107,5 @@ go get github.com/gorhill/cronexpr
 ## :watermelon: TODO
 * [ ] 鉴权
 * [ ] 设置任务过期时间
-* [ ] 日志分页
+* [x] 日志分页
 * [x] CI/CD `(使用Jenkins+Gitlab实现)`
